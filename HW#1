@@ -1,0 +1,93 @@
+#include <iostream>
+
+using namespace std;
+int* insNum(int* arr, int numIns, int pos, int& cap){
+    if (pos<0){
+        pos=0;
+    }
+    else if (pos>cap){
+        pos=cap;
+    }
+    int* new_arr=new int[cap+1];
+    memcpy(new_arr, arr, pos* sizeof(int));
+    new_arr[pos]=numIns;
+    memcpy(new_arr + pos+1, arr+pos, (cap-pos)*sizeof(int));
+    delete[] arr;
+    cap++;
+    return new_arr;
+    }
+
+int* delNum(int*arr, int position, int& cap){
+    if (position<0 | position>cap){
+        cout<<"There's no number there";
+        return nullptr;
+    }
+    int* new_arr= new int[cap-1];
+    memcpy(new_arr, arr, position* sizeof(int));
+    new_arr[position]=0;
+    memcpy(new_arr+position, arr+position+1, (cap-position-1)*sizeof(int));
+    delete[] arr;
+    cap--;
+    return new_arr;
+}
+
+
+int main()
+{
+    int NumFind, capa, nums, position,DelPos, input1, input2, input3, counter;
+    cout << "Enter a limit: ";
+    cin >> capa;
+
+    int* arr = new int[capa];
+    for (int i=0; i< capa; i++) {
+            cin >>  arr[i];
+        }
+
+        for (int i=0; i< capa; i++) {
+        cout << arr[i] << " ";
+    }
+    cout<< endl;
+    cout<< "Wanna insert a number? Type 1 for yes, any other number for no."<<endl;
+    cin >> input1;
+    if (input1==1){
+    cout << "Insert a number into the array: ";
+    cin >> nums;
+    cout << "And the position?";
+    cin >> position;
+    arr = insNum(arr, nums, position, capa);
+    cout<<"Updated array: ";
+    for (int i=0; i< capa; i++){
+        cout<<arr[i]<<" ";
+    }
+    }
+    cout<<endl;
+    cout<< "Wanna delete a number from the array? Type 1 for yes, any other number for no."<<endl;
+    cin >> input2;
+    if (input2==1){
+    cout << "Delete a number from the array, insert the position (index): ";
+    cin >> DelPos;
+    arr = delNum(arr, DelPos, capa);
+    if (arr != nullptr) {
+    cout<<"Updated array: ";
+    for (int i=0; i< capa; i++){
+        cout<<arr[i]<<" ";
+    }
+    }
+    }
+    cout << endl;
+    cout << "To search for a number in the array, enter 1"<<endl;
+    cin >> input3;
+    if (input3 == 1){
+    cout << "Which number do you want to find? "<<endl;
+    cin >> NumFind;
+    for (int i=0; i<capa; i++){
+        if (arr[i]== NumFind){
+            cout << "The index of that number is "<< i <<endl;
+        }
+    }
+    }
+    delete[] arr;
+    arr =nullptr;
+    return 0;
+}
+
